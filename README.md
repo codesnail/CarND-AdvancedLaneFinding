@@ -39,11 +39,11 @@ You're reading it!
 
 #### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 
-This step is implemented in the class Camera by the method calibrate(). It takes a path to the folder containing chessboard images, a file name pattern of all the calibration images to use, and the number of grid cells in x and y directions (6 and 9 in this case). The method then prepares "object points", which are the 3-D coordinates of the chessboard corners in relative terms. In our case, we assume coordinate z=0, $$x \epsilon [1,6]$$ and $y \epsilon [1,9]$$ For a 6x9 chessboard, we just assume 
+This step is implemented in the class Camera by the method calibrate(). It takes a path to the folder containing chessboard images, a file name pattern of all the calibration images to use, and the number of grid cells in x and y directions (6 and 9 in this case). The method then prepares "object points", which are the 3-D coordinates of the chessboard corners in relative terms. Here we have 6x9 chessboards, so we define coordinate z=0, x in [0,5] and y in [0,8]. So the "object point" coordinates of the internal corners of each chessboard are [0,0,0], [0,1,0], [0,2,0], ..., [0,8,0] for the first row. Similarly, for second row they are [1,0,0], [1,1,0], ..., [1,8,0], and so on for subsequent rows.
 
-I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
+OpenCV's method findChessboardCorners is used to find "image points", i.e. the actual x,y pixel coordinates of the corners for each image. The list of object points and detected image points is then used with cv2.calibrateCamera() method to get the Camera matrix. This is then stored in the Camera class along with the Distribution Coefficients for later use in undistorting images.
 
-I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
+`cv2.undistort()` function is used (encapsulated by Camera.undistort() method) to correct distortion of images. Following is an example of this correction applied to a chessboard image.
 
 ![alt text][image1]
 
