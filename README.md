@@ -51,18 +51,18 @@ OpenCV's method findChessboardCorners is used to find "image points", i.e. the a
 
 #### 1. Provide an example of a distortion-corrected image.
 
-To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
+Here is an example of a distortion-corrected image of a road frame:
 ![alt text][image2]
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
+Binary thresholding is done in class RoadFrame in the method threshold(). It uses various methods of thresholding images defined in the file thresholds.py, but finally a combination of HLS channel thresholding with X gradient was used to produce the final binary image. Here is an example of a binary road frame:
 
 ![alt text][image3]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The class RoadFrame contains the method getLane() that performs perspective transform on a frame of the road, using cv2.warpPerspective(). The coordinates are hand marked in the method getTransformParameters() in the file identify_lane_lines.py.
 
 ```python
 src = np.float32(
