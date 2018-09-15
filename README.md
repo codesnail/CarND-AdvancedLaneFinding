@@ -65,23 +65,24 @@ Binary thresholding is done in class RoadFrame in the method threshold(). It use
 The class RoadFrame contains the method getLane() that performs perspective transform on a frame of the road, using cv2.warpPerspective(). The coordinates are hand chosen in the method getTransformParameters() in the file identify_lane_lines.py. Here are the source and destination points:
 
 ```python
-src = np.float32([[520,500],
-                  [200,720],
-                  [1100,720],
-                  [765,500]])
-dst = np.float32([[300,450],
-                  [300,720],
-                  [1000,720],
-                  [1000,450]]) 
+src = np.float32([[520,  500],
+                  [200,  720],
+                  [1100, 720],
+                  [765,  500]])
+                  
+dst = np.float32([[300,  450],
+                  [300,  720],
+                  [1000, 720],
+                  [1000, 450]]) 
 ```
 
-I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
+Here is an example of a warped image:
 
 ![alt text][image4]
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+The code to identify lane pixels is contained in the class RoadFrame in the method sliding_window() and search_around_poly(). The code to fit a polynomial to these pixels is contained in class Lane in Lanes.py. First the method RoadFrame.getLane() is called. It determines if a previous left or right fit is passed to it. If not, then it uses the sliding_window() method, otherwise it uses search_around_poly().
 
 ![alt text][image5]
 
