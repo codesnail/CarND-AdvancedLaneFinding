@@ -15,15 +15,15 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./undistorted.png "Undistorted"
-[image2]: ./road_undistorted.jpg "Road Transformed"
-[image3]: ./thresholded.png "Binary Example"
-[image4]: ./warped_example.png "Warp Example"
-[image5]: ./lanes_sliding_window_1.png "Lanes"
-[image5.1]: ./lanes_search_around_poly_1.png "Lanes"
-[image5.2]: ./lanes_search_around_poly_2.png "Lanes 2"
-[image5.3]: ./lanes_search_around_poly_3.png "Lanes 3"
-[image6]: ./highlighted_lane.png "Highlighted Lanes 4"
+[image1]: ./output_images/undistorted.png "Undistorted"
+[image2]: ./output_images/road_undistorted.jpg "Road Transformed"
+[image3]: ./output_images/thresholded.png "Binary Example"
+[image4]: ./output_images/warped_example.png "Warp Example"
+[image5]: ./output_images/lanes_sliding_window_1.png "Lanes"
+[image5.1]: ./output_images/lanes_search_around_poly_1.png "Lanes"
+[image5.2]: ./output_images/lanes_search_around_poly_2.png "Lanes 2"
+[image5.3]: ./output_images/lanes_search_around_poly_3.png "Lanes 3"
+[image6]: ./output_images/highlighted_lane.png "Highlighted Lanes 4"
 [video1]: ./project_video_out.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
