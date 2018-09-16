@@ -65,7 +65,7 @@ Binary thresholding is done in class RoadFrame in the method threshold(). It use
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The class RoadFrame contains the method getLane() that performs perspective transform on a frame of the road, using cv2.warpPerspective(). The coordinates are hand chosen in the method getTransformParameters() in the file identify_lane_lines.py. Here are the source and destination points:
+First the transformation coordinates are hand chosen in class Perspective and method getTransformParameters() in the file Perspective.py. Here are the source and destination points:
 
 ```python
 src = np.float32([[520,  500],
@@ -79,18 +79,19 @@ dst = np.float32([[300,  450],
                   [1000, 450]]) 
 ```
 
+These are then passed to Camera.setPerspectiveTransform(), which creates and stores a perspective matrix using cv2.getPerspectiveTransform() using these source and destination points. This matrix is then also used to initialize the class RoadFrame and is used in the method RoadFrame.getLane() to perform perspective transform on a frame of the road, using cv2.warpPerspective().
 Here is an example of a warped image:
 
 ![alt text][image4]
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-The code to identify lane pixels is contained in the class RoadFrame in the method sliding_window() and search_around_poly(). The code to fit a polynomial to these pixels is contained in class Lane in Lanes.py. First the method RoadFrame.getLane() is called. It determines if a previous left or right fit is passed to it. If not, then it uses the sliding_window() method, otherwise it uses search_around_poly(). Both of these methods, after identifying left and right pixels, instantiate a Lane class and use Lane.fitPoly() method to fit a polynomial to them.
+In RoadFrame.getLane() after warping the road frame and applying binary threshold, the methods sliding_window() or search_around_poly() are called to identify lane pixels, depending on whether it's the first frame or subsequent. These methods identify lane pixels and instantiate an object of class Lane (contained in Lanes.py). Then Lane.fitPoly() method is called to fit a polynomial to these identified line pixels.
 
 Here is an example pipeline where lane lines are identified using sliding window:
 ![alt text][image5]
 
-This example is of a subsequent frame where lane lines are identified using a window around previous polynomial:
+This example is of a subsequent frame where lane lines are identified using a window around previously identified polynomial:
 ![alt text][image5.1]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
