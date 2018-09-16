@@ -20,6 +20,9 @@ The goals / steps of this project are the following:
 [image3]: ./thresholded.png "Binary Example"
 [image4]: ./warped_example.png "Warp Example"
 [image5]: ./lanes_sliding_window_1.png "Lanes"
+[image5.1]: ./lanes_search_around_poly_1.png "Lanes"
+[image5.2]: ./lanes_search_around_poly_2.png "Lanes"
+[image5.3]: ./lanes_search_around_poly_3.png "Lanes"
 [image6]: ./highlighted_lane.png "Highlighted Lane"
 [video1]: ./project_video_out.mp4 "Video"
 
