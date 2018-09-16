@@ -40,6 +40,11 @@ class Lane:
         self.calculateByCoeffs(self.left_coeff, self.right_coeff)
     
     def calculateByCoeffs(self, left_coeff, right_coeff):
+        '''
+        This method is separated out from fitPoly so that it can be called separately
+        from LaneSmoother to update the lane by coefficients
+        '''
+        
         self.left_coeff = left_coeff
         self.right_coeff = right_coeff
         try:
@@ -65,8 +70,15 @@ class Lane:
         return self
     
     def calculateByFit(self, left_fitx, right_fitx):
+        '''
+        This method is separated out so it can also be called externally by LaneSmoother
+        with an average left_fitx and right_fitx
+        '''
+        
         self.left_fitx = left_fitx
         self.right_fitx = right_fitx
+        
+        # Get left_fit and right_fit polynomials in meters
         left_fit_xm = np.polyfit(self.ploty*self.ym_per_pix, left_fitx*self.xm_per_pix, 2)
         right_fit_xm = np.polyfit(self.ploty*self.ym_per_pix, right_fitx*self.xm_per_pix, 2)
     
@@ -74,7 +86,7 @@ class Lane:
         # We'll choose the maximum y-value, corresponding to the bottom of the image
         y_eval = np.max(self.ploty*self.ym_per_pix)
         
-        ##### TO-DO: Implement the calculation of R_curve (radius of curvature) #####
+        # calculate R_curve (radius of curvature)
         self.left_curverad = ((1 + (2*left_fit_xm[0]*y_eval + left_fit_xm[1])**2)**(3/2)) / np.abs(2*left_fit_xm[0])  ## Implement the calculation of the left line here
         self.right_curverad = ((1 + (2*right_fit_xm[0]*y_eval + right_fit_xm[1])**2)**(3/2)) / np.abs(2*right_fit_xm[0])  ## Implement the calculation of the right line here
         
