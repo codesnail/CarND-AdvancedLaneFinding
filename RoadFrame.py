@@ -71,17 +71,8 @@ class RoadFrame:
 
         hls_binary = hls_select(img, h_thresh=(50, 100), l_thresh=(100,120), s_thresh=(30,120))
 
-        #combined = np.zeros_like(hls_binary)
-        #combined[(hls_bin==1)] = 1 # | 
-                #((img[:,:,0]>170) & (img[:,:,0]<=255)) |
-                #((img[:,:,1]>170) & (img[:,:,1]<=255)) |
-                #((img[:,:,2]>170) & (img[:,:,2]<=255))] = 1
-        #combined = self.getRegionOfInterest(combined) 
         combined = np.zeros_like(dir_bin)
-        combined[(hls_bin==1) | (gradx==1)] = 1 #& (grady==1) & (mag_binary == 1)] = 1
-        #combined = gradx*2 + mag_bin + sgradx_bin*2 + dir_bin
-        #combined[combined<=3] = 0
-        #combined[combined>3] = 1
+        combined[(hls_bin==1) | (gradx==1)] = 1 
         
         if(visualize==2):
             # Plot the result
@@ -204,19 +195,6 @@ class RoadFrame:
         return lane
     
     
-    def fit_poly(img_shape, leftx, lefty, rightx, righty):
-        ### TO-DO: Fit a second order polynomial to each with np.polyfit() ###
-        left_fit = np.polyfit(lefty, leftx, 2)
-        right_fit = np.polyfit(righty, rightx, 2)
-        # Generate x and y values for plotting
-        ploty = np.linspace(0, img_shape[0]-1, img_shape[0])
-        ### TO-DO: Calc both polynomials using ploty, left_fit and right_fit ###
-        left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
-        right_fitx = right_fit[0]*ploty**2 + right_fit[1]*ploty + right_fit[2]
-        
-        return left_fitx, right_fitx, ploty
-
-    
     def search_around_poly(self, binary_warped, prev_left_fit, prev_right_fit):
         # HYPERPARAMETER
         # Choose the width of the margin around the previous polynomial to search
@@ -247,9 +225,9 @@ class RoadFrame:
         ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0])
         lane.fitPoly(ploty)
         
+        # Modified the following 2 lines to create search window around the previous polynomial rather than current
         prev_left_fitx = prev_left_fit[0]*ploty**2 + prev_left_fit[1]*ploty + prev_left_fit[2]
         prev_right_fitx = prev_right_fit[0]*ploty**2 + prev_right_fit[1]*ploty + prev_right_fit[2]
-        #left_fitx, right_fitx, ploty = self.fit_poly(binary_warped.shape, leftx, lefty, rightx, righty)
         
         ## Visualization ##
         # Create an image to draw on and an image to show the selection window
@@ -275,18 +253,12 @@ class RoadFrame:
         cv2.fillPoly(window_img, np.int_([right_line_pts]), (0,255, 0))
         result = cv2.addWeighted(out_img, 1.0, window_img, 0.3, 0)
                         
-        # Plot the polynomial lines onto the image
-        #plt.plot(lane.left_fitx, ploty, color='yellow')
-        #plt.plot(lane.right_fitx, ploty, color='yellow')
         ## End visualization steps ##
         
         lane.lane_img = result
         
         lane.lane_img[np.int32(ploty), np.int32(lane.left_fitx)] = [0,255,255]
         lane.lane_img[np.int32(ploty), np.int32(lane.right_fitx)] = [0,255,255]
-
-        #cv2.imshow("test", result)
-        #cv2.waitKey(0)
         
         return lane
     
@@ -294,46 +266,15 @@ class RoadFrame:
         img_size = (self.frame.shape[1], self.frame.shape[0])
         self.warped = cv2.warpPerspective(self.frame, self.perspectiveM, img_size, flags=cv2.INTER_LINEAR)
         self.binary_warped = self.threshold(visualize=visualize)
-        
-        #lanes = self.fit_polynomial(binary_out, prev_left_fitx, prev_right_fitx)
-        
+                
         if(prev_left_fitx is None):
             self.lane = self.sliding_window(self.binary_warped)
         else:
             self.lane = self.search_around_poly(self.binary_warped, prev_left_fitx, prev_right_fitx)
         
         lane_center_pix, lane_center_xm = self.lane.getCenter()
-        #self.frame_ctr = binary_warped.shape[1]//2
-        #self.frame_ctr_xm = self.frame_ctr * self.xm_per_pix
         self.vehicle_offset = self.frame_ctr_xm - lane_center_xm
         
-        '''
-        if(visualize==2):
-            
-            # Plot the result
-            f, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(1, 5, figsize=(20, 25))
-            f.tight_layout()
-            ax1.imshow(self.frame)
-            ax1.set_title('Original Image', fontsize=16)
-            ax2.imshow(self.warped, cmap='gray')
-            ax2.set_title('Warped', fontsize=16)
-            ax3.imshow(self.binary_warped, cmap='gray')
-            ax3.set_title('Threshold Warped', fontsize=16)
-            if(prev_left_fitx is None):
-                ax4.set_aspect(4)
-                ax4.plot(self.lanes.histogram)
-                ax4.set_title('Histogram', fontsize=16)
-            else:
-                ax4.imshow(self.lanes.lane_img)
-                ax4.set_title('Search window', fontsize=16)
-            ax5.imshow(self.lanes.lane_img)
-            ax5.plot(self.lanes.left_fitx, self.lanes.ploty, color='yellow')
-            ax5.plot(self.lanes.right_fitx, self.lanes.ploty, color='yellow')
-            ax5.plot(lane_center_pix, np.max(self.lanes.ploty), 'o', color='red')
-            ax5.plot(self.frame_ctr, np.max(self.lanes.ploty), '^', color='red')
-            ax5.set_title('Lane lines', fontsize=16)
-            plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
-        '''
         return self.lane
     
     def highlightLane(self, left_fitx, right_fitx, ploty):
