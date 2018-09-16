@@ -19,7 +19,7 @@ The goals / steps of this project are the following:
 [image2]: ./road_undistorted.jpg "Road Transformed"
 [image3]: ./thresholded.png "Binary Example"
 [image4]: ./warped_example.png "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
+[image5]: ./lanes_sliding_window_1.png "Lanes"
 [image6]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
 
