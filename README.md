@@ -122,7 +122,7 @@ I abstracted out the whole pipeline into an object oriented design that uses the
 
 1. Camera (Camera.py): Represents the camera object and contains methods such as calibrate(), setPerspectiveTransform(), getNextFrame(), undistort(), etc.
 2. RoadFrame (RoadFrame.py): An object of RoadFrame is returned by Camera.getNextFrame(). It encapsulates methods such as getLane(), sliding_window(), search_around_poly(), highlightLane().
-3. Lane (Lanes.py): Represents the identified lane. Contains methods like fitPoly(), calculateByCoeffs(), calculateByFit().
+3. Lane (Lanes.py): Represents the identified lane. Contains methods like fitPoly(), calculateByCoeffs(), calculateByFit(). RoadFrame.getLane() method returns an object of this class.
 4. LaneSmoother (Lanes.py): Utility class to help smooth lanes over several frames.
 5. run_adv_lane_lines2.py: Main program that executes the pipeline.
 
