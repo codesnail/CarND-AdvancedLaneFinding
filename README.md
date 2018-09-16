@@ -87,7 +87,10 @@ Here is an example of a warped image:
 
 The code to identify lane pixels is contained in the class RoadFrame in the method sliding_window() and search_around_poly(). The code to fit a polynomial to these pixels is contained in class Lane in Lanes.py. First the method RoadFrame.getLane() is called. It determines if a previous left or right fit is passed to it. If not, then it uses the sliding_window() method, otherwise it uses search_around_poly(). Both of these methods, after identifying left and right pixels, instantiate a Lane class and use Lane.fitPoly() method to fit a polynomial to them.
 
+Here is an example pipeline where lane lines are identified using sliding window:
 ![alt text][image5]
+
+This example is of a subsequent frame where lane lines are identified using a window around previous polynomial:
 ![alt text][image5.1]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
