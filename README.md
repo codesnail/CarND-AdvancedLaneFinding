@@ -21,7 +21,7 @@ The goals / steps of this project are the following:
 [image4]: ./warped_example.png "Warp Example"
 [image5]: ./lanes_sliding_window_1.png "Lanes"
 [image6]: ./highlighted_lane.png "Highlighted Lane"
-[video1]: ./project_video.mp4 "Video"
+[video1]: ./project_video_out.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
