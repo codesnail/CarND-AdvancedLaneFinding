@@ -124,6 +124,7 @@ I abstracted out the whole pipeline into an object oriented design that uses the
 2. RoadFrame (RoadFrame.py): An object of RoadFrame is returned by Camera.getNextFrame(). It encapsulates methods such as getLane(), sliding_window(), search_around_poly(), highlightLane().
 3. Lane (Lanes.py): Represents the identified lane. Contains methods like fitPoly(), calculateByCoeffs(), calculateByFit().
 4. LaneSmoother (Lanes.py): Utility class to help smooth lanes over several frames.
+5. run_adv_lane_lines2.py: Main program that executes the pipeline.
 
 The first major problem I faced was finding the right thresholds to generate a good binary image that identifies the lane lines. This is the most experimental and manually laborious part of the pipeline, and is key to getting the rest of the project right. Here the HLS channel proved useful, alongwith the X gradient. The quality of the polynomial fit to the lane lines can be improved by spending some more time here to identify good parameters. I want to experiment with some deep learning models here just to identify the polynomial fit - I think that has the potential for alleviating a lot of manual experimentation. 
 
