@@ -89,8 +89,6 @@ The code to identify lane pixels is contained in the class RoadFrame in the meth
 
 ![alt text][image5]
 ![alt text][image5.1]
-![alt text][image5.2]
-![alt text][image5.3]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
