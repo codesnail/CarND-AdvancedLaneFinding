@@ -92,7 +92,7 @@ The Lane class includes this code in the calculateByFit() method. It calculates 
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-This is implemented in class RoadFrame.highlightLane() method.  An example of this can be seen below:
+The code to highlight the lane area is implemented in class RoadFrame.highlightLane() method.  An example of this can be seen below:
 
 ![alt text][image6]
 
@@ -110,4 +110,17 @@ Here's a [link to my video result](./project_video.mp4)
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+I abstracted out the whole pipeline into an object oriented design that uses the following classes:
+
+1. Camera (Camera.py): Represents the camera object and contains methods such as calibrate(), setPerspectiveTransform(), getNextFrame(), undistort(), etc.
+2. RoadFrame (RoadFrame.py): An object of RoadFrame is returned by Camera.getNextFrame(). It encapsulates methods such as getLane(), sliding_window(), search_around_poly(), highlightLane().
+3. Lane (Lanes.py): Represents the identified lane. Contains methods like fitPoly(), calculateByCoeffs(), calculateByFit().
+4. LaneSmoother (Lanes.py): Utility class to help smooth lanes over several frames.
+
+The first major problem I faced was finding the right thresholds to generate a good binary image that identifies the lane lines. This is the most experimental and manually laborious part of the pipeline, and is key to getting the rest of the project right. Here the HLS channel proved useful, alongwith the X gradient. The quality of the polynomial fit to the lane lines can be improved by spending some more time here to identify good parameters. I want to experiment with some deep learning models here just to identify the polynomial fit - I think that has the potential for alleviating a lot of manual experimentation. 
+
+Another trick that I want to use is to project the right lane line onto the left and vice versa to get better lines. This will help in those situations where one line is noisier or more obscure than the other. This is kind of what a human would do if one side is obscured but the other has good visibility.
+
+There is also more opportunity to experiment with lane smoothing. So far I tried averaging over X pixels over multiple frames, and averaging polynomial coefficients over frames. Even then, sometimes the individual lane line polynomials move aggressively from one frame to the next. This type of averaging works well on a highway where the lanes move gradually, but in a city or hilly roads (such as the advanced challenge) this by itself will not be so robust. Another thing to try would be to use weighted averages, based on recency of frames and a score of good fit, so past frames don't sway the lanes too much.
+
+Another problem area is that the perspective transform parameters are statically and manually selected before the pipeline starts. It doesn't work robustly across different roads or where the camera perspective changes, e.g. if there is a incline or decline. In a real setting, there needs to be a way to initialize the transformation parameters dynamically.
