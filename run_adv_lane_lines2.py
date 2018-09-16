@@ -19,7 +19,7 @@ camera.calibrate('camera_cal', 'calibration*.jpg', 6, 9, visualize=False)
 camera.setOpMode(2)
 camera.setVideoCapture('project_video.mp4') #'challenge_video.mp4') #
 persp = Perspective()
-img, src, dst = persp.getTransformParametersLong()
+img, src, dst = persp.getTransformParameters()
 camera.setPerspectiveTransform(img, src, dst)
 prev_left_fit = None
 prev_right_fit = None
