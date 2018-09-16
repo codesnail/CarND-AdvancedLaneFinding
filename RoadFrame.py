@@ -97,6 +97,8 @@ class RoadFrame:
     
     
     def sliding_window(self, binary_warped):
+        # This method is mostly copied from Udacity quiz #
+        
         # Take a histogram of the bottom half of the image
         histogram = np.sum(binary_warped[binary_warped.shape[0]//2:,:], axis=0)
         # Create an output image to draw on and visualize the result
@@ -196,6 +198,8 @@ class RoadFrame:
     
     
     def search_around_poly(self, binary_warped, prev_left_fit, prev_right_fit):
+        # This method is mostly copied from Udacity quiz #
+        
         # HYPERPARAMETER
         # Choose the width of the margin around the previous polynomial to search
         # The quiz grader expects 100 here, but feel free to tune on your own!
@@ -219,10 +223,11 @@ class RoadFrame:
         rightx = nonzerox[right_lane_inds]
         righty = nonzeroy[right_lane_inds]
     
-        # Fit new polynomials
+        # Initialize Lane object with identified pixels
         lane = Lanes.Lane(leftx, lefty, rightx, righty, binary_warped)
-        # Generate x and y values for plotting
+        # Generate y values for plotting
         ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0])
+        # Fit new polynomials
         lane.fitPoly(ploty)
         
         # Modified the following 2 lines to create search window around the previous polynomial rather than current
