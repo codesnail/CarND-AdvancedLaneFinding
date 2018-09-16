@@ -14,7 +14,7 @@ from Perspective import Perspective
 
 outpath = "test_images"
 camera = Camera.Camera()
-camera.calibrate('camera_cal', 'calibration*.jpg', 6, 9, visualize=False)
+camera.calibrate('camera_cal', 'calibration*.jpg', 6, 9, visualize=0)
 #camera.turnOn()
 camera.setOpMode(2)
 camera.setVideoCapture('project_video.mp4') #'challenge_video.mp4') #

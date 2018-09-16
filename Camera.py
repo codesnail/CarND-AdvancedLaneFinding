@@ -21,7 +21,7 @@ class Camera:
         self.perspectiveM = None
         self.perspectiveMInv = None
     
-    def calibrate(self, image_path, filename_pattern, nx, ny, visualize=False):
+    def calibrate(self, image_path, filename_pattern, nx, ny, visualize=0):
         objp = np.zeros((ny*nx, 3), np.float32)
         objp[:,:2] = np.mgrid[0:ny,0:nx].T.reshape(-1,2)
         print(objp.shape)
@@ -58,7 +58,7 @@ class Camera:
         # Perform camera calibration and set matrix and distortion coeff in class
         ret, self.calibMatrix, self.distCoeff, rvecs, tvecs = cv2.calibrateCamera(objPoints, imgPoints, img_size, None, None)
         
-        if(visualize == True):
+        if(visualize > 0):
             # test an image
             test_img = cv2.imread('camera_cal/calibration1.jpg')
             undist = self.undistort(test_img)
