@@ -21,9 +21,9 @@ The goals / steps of this project are the following:
 [image4]: ./warped_example.png "Warp Example"
 [image5]: ./lanes_sliding_window_1.png "Lanes"
 [image5.1]: ./lanes_search_around_poly_1.png "Lanes"
-[image5.2]: ./lanes_search_around_poly_2.png "Lanes"
-[image5.3]: ./lanes_search_around_poly_3.png "Lanes"
-[image6]: ./highlighted_lane.png "Highlighted Lane"
+[image5.2]: ./lanes_search_around_poly_2.png "Lanes 2"
+[image5.3]: ./lanes_search_around_poly_3.png "Lanes 3"
+[image6]: ./highlighted_lane.png "Highlighted Lanes 4"
 [video1]: ./project_video_out.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
@@ -88,6 +88,9 @@ Here is an example of a warped image:
 The code to identify lane pixels is contained in the class RoadFrame in the method sliding_window() and search_around_poly(). The code to fit a polynomial to these pixels is contained in class Lane in Lanes.py. First the method RoadFrame.getLane() is called. It determines if a previous left or right fit is passed to it. If not, then it uses the sliding_window() method, otherwise it uses search_around_poly(). Both of these methods, after identifying left and right pixels, instantiate a Lane class and use Lane.fitPoly() method to fit a polynomial to them.
 
 ![alt text][image5]
+![alt text][image5.1]
+![alt text][image5.2]
+![alt text][image5.3]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
