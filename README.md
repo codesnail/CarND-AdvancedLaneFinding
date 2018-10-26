@@ -2,17 +2,6 @@
 
 In this project, I implement Advanced Lane finding methods as part of the Udacity Self-driving car nano-degree program.
 
-The project implements the following pipeline:
-
-* Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
-* Apply a distortion correction to raw images.
-* Use color transforms, gradients, etc., to create a thresholded binary image.
-* Apply a perspective transform to rectify binary image ("birds-eye view").
-* Detect lane pixels and fit to find the lane boundary.
-* Determine the curvature of the lane and vehicle position with respect to center.
-* Warp the detected lane boundaries back onto the original image.
-* Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
-
 [//]: # (Image References)
 
 [image1]: ./output_images/undistorted.png "Undistorted"
@@ -24,7 +13,35 @@ The project implements the following pipeline:
 [image5.2]: ./output_images/lanes_search_around_poly_2.png "Lanes 2"
 [image5.3]: ./output_images/lanes_search_around_poly_3.png "Lanes 3"
 [image6]: ./output_images/highlighted_lane.png "Highlighted Lanes 4"
+[image7]: ./Advanced Lane Lines Sequence.jpg "Sequence Diagram"
+[image8]: ./VehicleDetection_class.jpg "Class Diagram"
 [video1]: ./project_video_out.mp4 "Video"
+
+The project implements the following pipeline:
+
+* Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
+* Apply a distortion correction to raw images.
+* Use color transforms, gradients, etc., to create a thresholded binary image.
+* Apply a perspective transform to rectify binary image ("birds-eye view").
+* Detect lane pixels and fit to find the lane boundary.
+* Determine the curvature of the lane and vehicle position with respect to center.
+* Warp the detected lane boundaries back onto the original image.
+* Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
+
+
+The following diagram shows the structure of the classes forming the pipeline:
+
+![alt text][image8]
+
+This sequence diagram provides a summary of how the pipeline is implemented.
+
+![alt text][image7]
+
+1. Camera (Camera.py): Represents the camera object and contains methods such as calibrate(), setPerspectiveTransform(), getNextFrame(), undistort(), etc.
+2. RoadFrame (RoadFrame.py): An object of RoadFrame is returned by Camera.getNextFrame(). It encapsulates methods such as getLane(), sliding_window(), search_around_poly(), highlightLane().
+3. Lane (Lanes.py): Represents the identified lane. Contains methods like fitPoly(), calculateByCoeffs(), calculateByFit(). RoadFrame.getLane() method returns an object of this class.
+4. LaneSmoother (Lanes.py): Utility class to help smooth lanes over several frames.
+5. run_adv_lane_lines2.py: Main program that executes the pipeline.
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
@@ -101,14 +118,6 @@ Here's a [link to my video result](./project_video_out.mp4)
 ### Discussion
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
-
-I abstracted out the whole pipeline into an object oriented design that uses the following classes:
-
-1. Camera (Camera.py): Represents the camera object and contains methods such as calibrate(), setPerspectiveTransform(), getNextFrame(), undistort(), etc.
-2. RoadFrame (RoadFrame.py): An object of RoadFrame is returned by Camera.getNextFrame(). It encapsulates methods such as getLane(), sliding_window(), search_around_poly(), highlightLane().
-3. Lane (Lanes.py): Represents the identified lane. Contains methods like fitPoly(), calculateByCoeffs(), calculateByFit(). RoadFrame.getLane() method returns an object of this class.
-4. LaneSmoother (Lanes.py): Utility class to help smooth lanes over several frames.
-5. run_adv_lane_lines2.py: Main program that executes the pipeline.
 
 The first major problem I faced was finding the right thresholds to generate a good binary image that identifies the lane lines. This is the most experimental and manually laborious part of the pipeline, and is key to getting the rest of the project right. Here the HLS channel proved useful, alongwith the X gradient. The quality of the polynomial fit to the lane lines can be improved by spending some more time here to identify good parameters. I want to experiment with some deep learning models here just to identify the polynomial fit - I think that has the potential for alleviating a lot of manual experimentation. 
 
