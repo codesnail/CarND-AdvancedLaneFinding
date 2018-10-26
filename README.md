@@ -1,8 +1,8 @@
 # Advanced Lane Finding Project
 
-This repository contains code for Advanced Lane Finding project for the Udacity Self Driving Car Nanodegree program.
+In this project, I implement Advanced Lane finding methods as part of the Udacity Self-driving car nano-degree program.
 
-The goals / steps of this project are the following:
+The project implements the following pipeline:
 
 * Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 * Apply a distortion correction to raw images.
@@ -28,44 +28,30 @@ The goals / steps of this project are the following:
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
-
----
-
-### Writeup / README
-
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
-
-You're reading it!
-
 ### Camera Calibration
 
-#### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
-
-This step is implemented in the class Camera by the method calibrate(). It takes a path to the folder containing chessboard images, a file name pattern of all the calibration images to use, and the number of grid cells in x and y directions (6 and 9 in this case). The method then prepares "object points", which are the 3-D coordinates of the chessboard corners in relative terms. Here we have 6x9 chessboards, so we define coordinate z=0, x in [0,5] and y in [0,8]. So the "object point" coordinates of the internal corners of each chessboard are [0,0,0], [0,1,0], [0,2,0], ..., [0,8,0] for the first row. Similarly, for second row they are [1,0,0], [1,1,0], ..., [1,8,0], and so on for subsequent rows.
+This step is implemented in the class `Camera` in the method calibrate(). It takes a path to the folder containing a set of chessboard images, a file name pattern of all the calibration images to use, and the number of grid cells in x and y directions (6 and 9 in this case). The method then prepares "object points", which are the 3-D coordinates of the chessboard corners in relative terms. Here we have 6x9 chessboards, so we define coordinate z=0, x in [0,5] and y in [0,8]. So the "object point" coordinates of the internal corners of each chessboard are [0,0,0], [0,1,0], [0,2,0], ..., [0,8,0] for the first row. Similarly, for second row they are [1,0,0], [1,1,0], ..., [1,8,0], and so on for subsequent rows.
 
 OpenCV's method findChessboardCorners is used to find "image points", i.e. the actual x,y pixel coordinates of the corners for each image. The list of object points and detected image points is then used with cv2.calibrateCamera() method to get the Camera matrix. This is then stored in the Camera class along with the Distribution Coefficients for later use in undistorting images.
 
-`cv2.undistort()` function is used (encapsulated by Camera.undistort() method) to correct distortion of images. Following is an example of this correction applied to a chessboard image.
+### Correct Image Distortion
+
+`cv2.undistort()` function is then used (encapsulated by `Camera.undistort()` method) to correct distortion of images. Following is an example of this correction applied to a chessboard image.
 
 ![alt text][image1]
-
-### Pipeline (single images)
-
-#### 1. Provide an example of a distortion-corrected image.
 
 Here is an example of a distortion-corrected image of a road frame:
 ![alt text][image2]
 
-#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+### Binary Thresholding
 
-Binary thresholding is done in class RoadFrame in the method threshold(). It uses various methods of thresholding images defined in the file thresholds.py, but finally a combination of HLS channel thresholding with X gradient was used to produce the final binary image. Here is an example of a binary road frame:
+Binary thresholding is the first step to separate lane pixels from non-lane pixels. Basically it should convert most pixels identified as a lane line as 1, and most others as 0 (it is not perfect and that's why later steps build on this). This is implemented in class `RoadFrame` in the method `threshold()`. It uses various methods of thresholding images defined in the file thresholds.py, but finally a combination of HLS channel thresholding with X gradient was used to produce the final binary image. Here is an example of a binary road frame:
 
 ![alt text][image3]
 
-#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
+### Perspective Transformation
 
-First the transformation coordinates are hand chosen in class Perspective and method getTransformParameters() in the file Perspective.py. Here are the source and destination points:
+First the transformation coordinates are hand chosen in `Perspective.getTransformParameters()` in the file `Perspective.py`. Here are the source and destination points:
 
 ```python
 src = np.float32([[520,  500],
@@ -79,14 +65,14 @@ dst = np.float32([[300,  450],
                   [1000, 450]]) 
 ```
 
-These are then passed to Camera.setPerspectiveTransform(), which creates and stores a perspective matrix using cv2.getPerspectiveTransform() using these source and destination points. This matrix is then also used to initialize the class RoadFrame and is used in the method RoadFrame.getLane() to perform perspective transform on a frame of the road, using cv2.warpPerspective().
+These are then passed to `Camera.setPerspectiveTransform()`, which creates and stores a perspective matrix using `cv2.getPerspectiveTransform()` using these source and destination points. This matrix is then also used to initialize the class `RoadFrame` and is used in the method `RoadFrame.getLane()` to perform perspective transform on a frame of the road, using `cv2.warpPerspective()`.
 Here is an example of a warped image:
 
 ![alt text][image4]
 
-#### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
+### Identify lane-line pixels and fit a polynomial through them
 
-In RoadFrame.getLane() after warping the road frame and applying binary threshold, the methods sliding_window() or search_around_poly() are called to identify lane pixels, depending on whether it's the first frame or subsequent. These methods identify lane pixels and instantiate an object of class Lane (contained in Lanes.py). Then Lane.fitPoly() method is called to fit a polynomial to these identified line pixels.
+In `RoadFrame.getLane()` after warping the road frame and applying binary threshold, the methods sliding_window() or search_around_poly() are called to identify lane pixels, depending on whether it's the first frame or subsequent. These methods identify lane pixels and instantiate an object of class Lane (contained in `Lanes.py`). Then `Lane.fitPoly()` method is called to fit a polynomial to these identified line pixels.
 
 Here is an example pipeline where lane lines are identified using sliding window:
 ![alt text][image5]
@@ -94,21 +80,19 @@ Here is an example pipeline where lane lines are identified using sliding window
 This example is of a subsequent frame where lane lines are identified using a window around previously identified polynomial:
 ![alt text][image5.1]
 
-#### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
+### Calculate Radius of Curvature of the lane and Position of the vehicle with respect to center
 
 The Lane class includes this code in the calculateByFit() method. It calculates the radius of curvature of each lane line and stores it in the class.
 
-#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+### Results
 
-The code to highlight the lane area is implemented in class RoadFrame.highlightLane() method.  An example of this can be seen below:
+The code to highlight the lane area is implemented in class `RoadFrame.highlightLane()` method.  An example of this can be seen below:
 
 ![alt text][image6]
 
 ---
 
 ### Pipeline (video)
-
-#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
 Here's a [link to my video result](./project_video_out.mp4)
 
@@ -130,6 +114,6 @@ The first major problem I faced was finding the right thresholds to generate a g
 
 Another trick that I want to use is to project the right lane line onto the left and vice versa to get better lines. This will help in those situations where one line is noisier or more obscure than the other. This is kind of what a human would do if one side is obscured but the other has good visibility.
 
-There is also more opportunity to experiment with lane smoothing. So far I tried averaging over X pixels over multiple frames, and averaging polynomial coefficients over frames. Even then, sometimes the individual lane line polynomials move aggressively from one frame to the next. This type of averaging works well on a highway where the lanes move gradually, but in a city or hilly roads (such as the advanced challenge) this by itself will not be so robust. Another thing to try would be to use weighted averages, based on recency of frames and a score of good fit, so past frames don't sway the lanes too much.
+There is also more opportunity to experiment with lane smoothing. So far I tried averaging over X pixels over multiple frames, and averaging polynomial coefficients over frames. Even then, sometimes the individual lane line polynomials move aggressively from one frame to the next. This type of averaging works well on a highway where the lanes move gradually, but in a city or hilly roads (such as the advanced challenge) this by itself will not be so robust. Another thing to try would be to use weighted averages, based on recency of frames and a score of good fit, so past frames don't sway the lane lines too much.
 
 Another problem area is that the perspective transform parameters are statically and manually selected before the pipeline starts. It doesn't work robustly across different roads or where the camera perspective changes, e.g. if there is a incline or decline. In a real setting, there needs to be a way to initialize the transformation parameters dynamically.
