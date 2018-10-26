@@ -28,6 +28,10 @@ The project implements the following pipeline:
 [image8]: ./VehicleDetection_Classes.jpg "Class Diagram"
 [video1]: ./project_video_out.mp4 "Video"
 
+Here's a [link to my video result](./project_video_out.mp4)
+
+The report below details how this was achieved.
+
 ## Program Design
 
 ### Class Diagram
