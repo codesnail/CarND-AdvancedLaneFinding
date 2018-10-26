@@ -2,6 +2,17 @@
 
 In this project, I implement Advanced Lane finding methods as part of the Udacity Self-driving car nano-degree program.
 
+The project implements the following pipeline:
+
+* Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
+* Apply a distortion correction to raw images.
+* Use color transforms, gradients, etc., to create a thresholded binary image.
+* Apply a perspective transform to rectify binary image ("birds-eye view").
+* Detect lane pixels and fit to find the lane boundary.
+* Determine the curvature of the lane and vehicle position with respect to center.
+* Warp the detected lane boundaries back onto the original image.
+* Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
+
 [//]: # (Image References)
 
 [image1]: ./output_images/undistorted.png "Undistorted"
@@ -16,18 +27,6 @@ In this project, I implement Advanced Lane finding methods as part of the Udacit
 [image7]: ./Advanced Lane Lines Sequence.jpg "Sequence Diagram"
 [image8]: ./VehicleDetection_class.jpg "Class Diagram"
 [video1]: ./project_video_out.mp4 "Video"
-
-The project implements the following pipeline:
-
-* Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
-* Apply a distortion correction to raw images.
-* Use color transforms, gradients, etc., to create a thresholded binary image.
-* Apply a perspective transform to rectify binary image ("birds-eye view").
-* Detect lane pixels and fit to find the lane boundary.
-* Determine the curvature of the lane and vehicle position with respect to center.
-* Warp the detected lane boundaries back onto the original image.
-* Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
-
 
 The following diagram shows the structure of the classes forming the pipeline:
 
