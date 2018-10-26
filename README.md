@@ -34,7 +34,7 @@ This step is implemented in the class `Camera` in the method calibrate(). It tak
 
 OpenCV's method findChessboardCorners is used to find "image points", i.e. the actual x,y pixel coordinates of the corners for each image. The list of object points and detected image points is then used with cv2.calibrateCamera() method to get the Camera matrix. This is then stored in the Camera class along with the Distribution Coefficients for later use in undistorting images.
 
-### Correct Image Distortion
+### Undistort Image
 
 `cv2.undistort()` function is then used (encapsulated by `Camera.undistort()` method) to correct distortion of images. Following is an example of this correction applied to a chessboard image.
 
