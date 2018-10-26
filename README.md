@@ -1,6 +1,6 @@
 # Advanced Lane Finding Project
 
-In this project, I implement Advanced Lane finding methods as part of the Udacity Self-driving car nano-degree program.
+The project was implemented as part of the Udacity Self-driving car nano-degree program. The goal of this project is to implement advanced methods of lane finding for curved lanes, identifying the lane boundaries, and calculate the radius of curvature and vehicle position. All of these are important perception steps to be able to control the vehicle to stay in a lane.
 
 The project implements the following pipeline:
 
@@ -28,10 +28,14 @@ The project implements the following pipeline:
 [image8]: ./VehicleDetection_Classes.jpg "Class Diagram"
 [video1]: ./project_video_out.mp4 "Video"
 
+## Program Design
+
+### Class Diagram
 The following diagram shows the structure of the classes forming the pipeline:
 
 ![alt text][image8]
 
+### Sequence Diagram
 This sequence diagram provides a summary of how the pipeline is implemented.
 
 ![alt text][image7]
