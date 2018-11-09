@@ -24,7 +24,7 @@ The project implements the following pipeline:
 [image5.2]: ./output_images/lanes_search_around_poly_2.png "Lanes 2"
 [image5.3]: ./output_images/lanes_search_around_poly_3.png "Lanes 3"
 [image6]: ./output_images/highlighted_lane.png "Highlighted Lanes 4"
-[image7]: ./Advanced_Lane_Lines_Sequence.jpg "Sequence Diagram"
+[image7]: ./AdvancedLaneLines_Sequence.jpg "Sequence Diagram"
 [image8]: ./VehicleDetection_Classes.jpg "Class Diagram"
 [video1]: ./project_video_out.mp4 "Video"
 
